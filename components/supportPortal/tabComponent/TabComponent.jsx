@@ -12,22 +12,27 @@ function TabComponent() {
 
   const getUserType = useCallback(async () => {
     try {
-      const response = await fetch('https://buapp2k16.' + environment + '.us.ml.com/MDCConfigService/api/Auth/userworkspace', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Accept' : 'application/json',
-          'Content-Type' : 'application/json'
+      const response = await fetch(
+        `https://buapp2k16.${environment}.us.ml.com/MDCConfigService/api/Auth/userworkspace`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
         }
-      });
-      
+      );
+
       if (response.ok) {
         const data = await response.json();
         if (data.length > 0) {
           const json = data[0].Message;
           if (json === "User Id is required.") {
-            const loginUrl = 'https://cfuiv4.' + environment + '.us.ml.com/tools/login';
-            setUserType(json + `<a href='${loginUrl}' target='_blank'>Login here!</a>`);
+            const loginUrl = `https://cfuiv4.${environment}.us.ml.com/tools/login`;
+            setUserType(
+              json + `<a href='${loginUrl}' target='_blank'>Login here!</a>`
+            );
             return;
           }
         }
@@ -40,16 +45,48 @@ function TabComponent() {
     }
   }, [environment]);
 
+  const fetchApplicationsData = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `https://buapp2k16.${environment}.us.ml.com/MDCConfigService/api/MDCData/RemoteConfig`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        // Assuming you want to display the JSON data as text in an element with the id 'txtApplications'
+        document.getElementById("txtApplications").textContent = JSON.stringify(
+          data
+        );
+      } else {
+        console.error("Failed to fetch Applications data");
+      }
+    } catch (error) {
+      console.error("Error fetching Applications data:", error);
+    }
+  }, [environment]);
+
   useEffect(() => {
-    getUserType();
-    getEnvironment().then((env) => {
+    const fetchData = async () => {
+      await getUserType();
+      await fetchApplicationsData();
+      const env = await getEnvironment();
       setEnvironment(env);
-    });
-  }, [getUserType]);
+    };
+
+    fetchData();
+  }, [getUserType, fetchApplicationsData]);
 
   async function getEnvironment() {
     const host = window.location.hostname;
-    let environment = "pl1";
+    let environment = "";
   
     if (host.includes("pl1")) {
       environment = "pl1";
@@ -69,14 +106,7 @@ function TabComponent() {
   
     return environment;
   }  
-  useEffect(() => {
-    getEnvironment().then((env) => {
-      // Set the environment value to a state variable
-      setEnvironment(env);
-    });
-  }, []); // The empty dependency array ensures the effect runs once on mount
   
-
   return (
     <div>
       <div className="toolHeader">
