@@ -1,0 +1,31 @@
+/* Styles for the toolHeader container */
+.toolHeader {
+  background-color: #f5f5f5;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Styles for the portalTitle */
+.portalTitle {
+  font-size: 24px;
+}
+
+/* Styles for the envSelector container */
+.envSelector {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+/* Styles for the segment */
+.segment {
+  margin-right: 20px;
+}
+
+/* Styles for the UserRole paragraph */
+#UserRole {
+  font-weight: bold;
+  margin-left: 5px;
+}
