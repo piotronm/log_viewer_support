@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./TabComponent.css";
 
 function TabComponent() {
@@ -10,13 +10,7 @@ function TabComponent() {
     setActiveTab(tabName);
   };
 
-  useEffect(() => {
-    getEnvironment().then((env) => {
-      setEnvironment(env);
-    });
-  }, []);
-
-  async function getUserType() {
+  const getUserType = useCallback(async () => {
     try {
       const response = await fetch('https://buapp2k16.' + environment + '.us.ml.com/MDCConfigService/api/Auth/userworkspace', {
         method: 'GET',
@@ -44,7 +38,14 @@ function TabComponent() {
     } catch (error) {
       console.error("Error fetching user type data:", error);
     }
-  }
+  }, [environment]);
+
+  useEffect(() => {
+    getUserType();
+    getEnvironment().then((env) => {
+      setEnvironment(env);
+    });
+  }, [getUserType]);
 
   async function getEnvironment() {
     const host = window.location.hostname;
