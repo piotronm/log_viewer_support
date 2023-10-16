@@ -28,11 +28,10 @@ function ApplicationsTab({ environment }) {
             jsonString +=
               "<div class='subsection'>" +
               jsonArray[i].replace(/\\r\\n/g, '').replace(/\\/g, '')
-                .replace(/"{/g, "}")
+                .replace(/"{/g, "{")
                 .replace(/}"/g, "}")
                 .replace(/{/g, "<div class='newsection'>{<div class='subsection'>")
-                .replace(/}/g, "</div>}</div>") +
-              "</div>";
+                .replace(/}/g, "</div>}</div>") + "</div>";
           }
           setApplicationsData(jsonString);
         } else {
