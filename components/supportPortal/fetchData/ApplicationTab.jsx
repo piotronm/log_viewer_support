@@ -21,7 +21,25 @@ function ApplicationsTab({ environment }) {
 
         if (response.ok) {
           const data = await response.json();
-          setApplicationsData(data);
+          const jsonObjectString = JSON.stringify(data);
+          const jsonArray = jsonObjectString.split(",");
+          let jsonString = "";
+          for (let i = 0; i < jsonArray.length; i++) {
+            jsonString +=
+              "<div class='subsection'>" +
+              jsonArray[i]
+                .replace(/\\r\\n/g, "")
+                .replace(/\\/g, "")
+                .replace(/"{/g, "{")
+                .replace(/}"/g, "}")
+                .replace(
+                  /{/g,
+                  "<div class='newsection'>{<div class='subsection'>"
+                )
+                .replace(/}/g, "</div>}</div>") +
+              "</div>";
+          }
+          setApplicationsData(jsonString);
         } else {
           console.error("Failed to fetch Applications data");
         }
