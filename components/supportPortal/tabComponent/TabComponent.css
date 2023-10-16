@@ -60,6 +60,11 @@
   margin-top: 10px;
 }
 
+.tabSeparator {
+  border-top: 2px solid #007bff;
+  margin-top: 10px;
+}
+
 .segment {
   margin-right: 10px;
 }
