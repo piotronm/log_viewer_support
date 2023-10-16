@@ -1,0 +1,65 @@
+/* Styles for the tab container */
+.tab {
+  display: flex;
+  background-color: #f2f2f2;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+/* Styles for the tab buttons */
+.tab button {
+  background-color: #e0e0e0;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-right: 5px;
+  color: #000; /* Specify the text color */
+}
+
+/* Styles for the active tab button */
+.tab button.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.tabcontent {
+  padding: 10px;
+}
+
+.tabcontent[style*="block"] {
+  display: block;
+}
+
+.toolHeader {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.portalTitle {
+  font-size: 24px;
+}
+
+.log-viewer-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+  background-color: #333;
+  border-radius: 5px;
+  transition: color 0.3s;
+}
+
+.log-viewer-link:hover {
+  color: #007bff;
+}
+
+.envSelector {
+  margin-top: 10px;
+}
+
+.segment {
+  margin-right: 10px;
+}
