@@ -152,6 +152,7 @@ function TabComponent() {
           About
         </button>
       </div>
+      <div className="tabSeparator"></div>
 
       {activeTab === "Applications" && <ApplicationsTab environment={environment} />}
       {activeTab === "Menus" && <MenusTab environment={environment} />}
@@ -160,6 +161,7 @@ function TabComponent() {
       {activeTab === "NewTab" && <NewTab environment={environment} /> }
       {activeTab === "UserInfo" && <UserInfoTab environment={environment} /> }
       {activeTab === "Metrics" && <UserMetricsTab environment={environment} /> }
+      <div className="tabSeparator"></div>
 
       <div
         id="About"
