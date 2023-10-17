@@ -1,0 +1,26 @@
+.toolHeader {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.portalTitle {
+  font-size: 24px;
+}
+
+.envSelector {
+  margin-top: 10px;
+}
+
+.segment {
+  margin-right: 10px;
+}
+
+/* Styles for the UserRole paragraph */
+/* #UserRole {
+  font-weight: bold;
+  margin-left: 5px;
+} */
