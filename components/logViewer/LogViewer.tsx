@@ -23,7 +23,7 @@ function LogViewer() {
   const [selectedContentIDName, setSelectedContentIDName] = useState('');
   const [errorCount, setErrorCount] = useState<number>(0);
   const [totalLogEntries, setTotalLogEntries] = useState<number>(0);
-  const [filteredDataCount, setFilteredDataCount] = useState<number>(0);
+  const [currentFilteredDataCount, setCurrentFilteredDataCount] = useState<number>(0);
 
   useEffect(() => {
       // Filter data by Module Name
@@ -78,7 +78,7 @@ setContentNameOptions(sortedContentNameOptions);
     setContentIDNameOptions(contentIDNameOptions);
     const totalLogEntries = data.length;
     setTotalLogEntries(totalLogEntries);
-    setFilteredDataCount(filteredData.length); 
+    setCurrentFilteredDataCount(filteredData.length); 
   }, [data, searchTerm, logType, selectedModuleName, selectedContentName, selectedContentIDName, startDate, endDate]); // Include relevant dependencies
   
   
@@ -352,7 +352,7 @@ const handleContactClick = () => {
         <input type="text"  value={searchTerm} onChange={handleSearchInput} placeholder='Search' />
         <button  onClick={toggleSortOrder}>Currently Displaying {sortOrder === "newest" ? "Oldest - Newest" : "Newest - Oldest"}</button>
         <Link to="/" >Support Portal</Link>
-        <label>Total Filtered Entries: {filteredDataCount}</label>
+        <label>Total Filtered Entries: {currentFilteredDataCount}</label>
       </div>
       <div >
         <label  htmlFor="log-types">Log Level:</label>
