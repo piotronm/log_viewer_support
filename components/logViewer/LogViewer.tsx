@@ -81,10 +81,6 @@ setContentNameOptions(sortedContentNameOptions);
     setCurrentFilteredDataCount(filteredData.length); 
   }, [data, searchTerm, logType, selectedModuleName, selectedContentName, selectedContentIDName, startDate, endDate]); // Include relevant dependencies
   
-  
-
-  
-  
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
@@ -438,3 +434,4 @@ const handleContactClick = () => {
   );    
 }
 export default LogViewer;
+export {};
