@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment-timezone';
 
-
 function LogViewer() {
   const [data, setData] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,47 +23,47 @@ function LogViewer() {
   const [selectedContentIDName, setSelectedContentIDName] = useState('');
   const [errorCount, setErrorCount] = useState<number>(0);
   const [totalLogEntries, setTotalLogEntries] = useState<number>(0); 
-  const [logsDisplayedCount, setLogsDisplayedCount] = useState<number>(0);
   
   useEffect(() => {
-    // Filter data by Module Name
-    const moduleNameRegex = /\[([^\]]*?[\w-]+[^\]]*?)\]/gi;
-    const filteredModuleNameOptions = data.filter(item => moduleNameRegex.test(item));
+      // Filter data by Module Name
+  const moduleNameRegex = /\[([^\[\]]*?[\w-]+[^\[\]]*?)\]/gi;
+  const filteredOptions = data.filter(item => moduleNameRegex.test(item));
+  // Extract the options within '[' and ']', remove duplicates, and exclude "contentid"
+  const moduleNameOptionsSet = new Set<string>(); // Explicitly type the Set
+  filteredOptions.forEach(item => {
+    const matches = item.match(moduleNameRegex);
+    if (matches && matches.length > 0) {
+      matches.forEach(match => {
+        const option = match.replace('[', '').replace(']', '');
+        if (/^[A-Za-z0-9-]+$/.test(option) && !option.toLowerCase().includes('contentid-')) {
+          moduleNameOptionsSet.add(option);}});}});
+  // Sort the options alphabetically
+  const sortedModuleNameOptions = Array.from(moduleNameOptionsSet).sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: 'base' }));
+  setModuleNameOptions(sortedModuleNameOptions);
   
-    // Filter data by Content Identifier Name
-    const contentIdentifierRegex = /ContentIdentifierName='([^']+)'/g;
-    const filteredContentNameOptions = data.filter(item => contentIdentifierRegex.test(item));
-  
+// Filter data by Content Identifier Name
+const contentIdentifierRegex = /ContentIdentifierName='([^']+)'/g; // Update the regex pattern
+const filteredContentNameOptions = data.filter(item => contentIdentifierRegex.test(item));
+const contentNameOptionsSet = new Set<string>(); // Explicitly type the Set
+filteredContentNameOptions.forEach(item => {
+  const matches = item.match(contentIdentifierRegex);
+  if (matches && matches.length > 0) {
+    matches.forEach(match => {
+      const option = match.replace("ContentIdentifierName='", "").replace("'", ""); // Remove single quotes from the option
+      contentNameOptionsSet.add(option);
+    });
+  }
+});
+const contentNameOptions = Array.from(contentNameOptionsSet);
+// Sort the options alphabetically
+const sortedContentNameOptions = contentNameOptions.sort((a, b) => a.localeCompare(b));
+setContentNameOptions(sortedContentNameOptions);
+     
     // Filter data by Content ID 
     const contentIDRegex = /\[contentid-([^[\]]+)\]/gi;
     const filteredContentIDNameOptions = data.filter(item => contentIDRegex.test(item));
-  
-    // Update state variables
-    const moduleNameOptionsSet = new Set<string>(); 
-    filteredModuleNameOptions.forEach(item => {
-      const matches = item.match(moduleNameRegex);
-      if (matches && matches.length > 0) {
-        matches.forEach(match => {
-          const option = match.replace('[', '').replace(']', '');
-          if (/^[A-Za-z0-9-]+$/.test(option) && !option.toLowerCase().includes('contentid-')) {
-            moduleNameOptionsSet.add(option);
-          }
-        });
-      }
-    });
-  
-    const contentNameOptionsSet = new Set<string>();
-    filteredContentNameOptions.forEach(item => {
-      const matches = item.match(contentIdentifierRegex);
-      if (matches && matches.length > 0) {
-        matches.forEach(match => {
-          const option = match.replace("ContentIdentifierName='", "").replace("'", "");
-          contentNameOptionsSet.add(option);
-        });
-      }
-    });
-  
-    const contentIDNameOptionsSet = new Set<string>();
+    const contentIDNameOptionsSet = new Set<string>(); // Explicitly type the Set
     filteredContentIDNameOptions.forEach(item => {
       const matches = item.match(contentIDRegex);
       if (matches && matches.length > 0) {
@@ -74,17 +73,14 @@ function LogViewer() {
         });
       }
     });
-  
+    const contentIDNameOptions = Array.from(contentIDNameOptionsSet);
+    setContentIDNameOptions(contentIDNameOptions);
     const totalLogEntries = data.length;
-    const filteredLogEntries = Math.min(filteredModuleNameOptions.length, filteredContentNameOptions.length, filteredContentIDNameOptions.length);
-  
-    // Update state variables
-    setModuleNameOptions(Array.from(moduleNameOptionsSet).sort((a, b) => a.localeCompare(b)));
-    setContentNameOptions(Array.from(contentNameOptionsSet).sort((a, b) => a.localeCompare(b)));
-    setContentIDNameOptions(Array.from(contentIDNameOptionsSet).sort((a, b) => a.localeCompare(b)));
     setTotalLogEntries(totalLogEntries);
-    setLogsDisplayedCount(filteredLogEntries); // Update the count of logs being displayed
+
   }, [data]);
+  
+
   
   
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -354,7 +350,6 @@ const handleContactClick = () => {
         <input type="text"  value={searchTerm} onChange={handleSearchInput} placeholder='Search' />
         <button  onClick={toggleSortOrder}>Currently Displaying {sortOrder === "newest" ? "Oldest - Newest" : "Newest - Oldest"}</button>
         <Link to="/" >Support Portal</Link>
-        <label>Log Entries Displayed: {logsDisplayedCount}</label>
       </div>
       <div >
         <label  htmlFor="log-types">Log Level:</label>
